@@ -264,16 +264,16 @@ function startGame(event) {
   const difficultyValue = difficulty.value;
   if (difficultyValue == 'Easy') {
     setInterval(spawnEnemy, 2000);
-    return (speed = 4);
+    return (speed = 1);
   } else if (difficultyValue == 'Medium') {
     setInterval(spawnEnemy, 1400);
-    return (speed = 6);
+    return (speed = 3);
   } else if (difficultyValue == 'Hard') {
     setInterval(spawnEnemy, 1000);
-    return (speed = 8);
+    return (speed = 5);
   } else if (difficultyValue == 'Fast') {
     setInterval(spawnEnemy, 700);
-    return (speed = 10);
+    return (speed = 6);
   }
   setInterval(spawnEnemy, 1000);
 }
