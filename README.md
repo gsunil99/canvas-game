@@ -1,4 +1,4 @@
-# Shooting Game
+# Shooting Canvas Game
 
 This is a simple shooting game implemented using HTML5 Canvas and JavaScript. The game allows the player to control a character and shoot at enemies to earn points. The goal is to survive as long as possible and achieve a high score.
 
