@@ -2,8 +2,10 @@
 
 This is a simple shooting game implemented using HTML5 Canvas and JavaScript. The game allows the player to control a character and shoot at enemies to earn points. The goal is to survive as long as possible and achieve a high score.
 
-## Gameplay
+## Video
+<video src="https://github.com/gsunil99/canvas-game/assets/56781242/2947c55d-f974-4f48-b2d9-a1b51bc730d0"></video>
 
+## GamePlay
 - The player controls a character represented by a circle on the screen.
 - Enemies appear on the screen and move towards the player.
 - The player can use the mouse to aim and shoot at the enemies.
