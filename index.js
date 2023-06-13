@@ -21,7 +21,29 @@ playerDetails = {
   radius: 15,
   color: 'white',
 };
-
+//controls
+var controlsWidth = window.innerWidth || document.documentElement.clientWidth;
+if (controlsWidth <= 768) {
+  const firstControl = document.createElement('p');
+  firstControl.innerHTML = 'Shoot Enemy: Single tap on screen';
+  const secondControl = document.createElement('p');
+  secondControl.innerHTML =
+    'Kill All Enemies: Tap on screen for more than second';
+  form.appendChild(firstControl);
+  form.appendChild(secondControl);
+} else {
+  const firstControl = document.createElement('p');
+  firstControl.innerHTML =
+    'Shoot Enemy with small bullets: Single tap on screen';
+  const secondControl = document.createElement('p');
+  secondControl.innerHTML =
+    'Shoot Enemy with large bullets: right click on screen';
+  const thirdControl = document.createElement('p');
+  thirdControl.innerHTML = 'Kill All Enemies: click on space bar';
+  form.appendChild(firstControl);
+  form.appendChild(secondControl);
+  form.appendChild(thirdControl);
+}
 //------------ creating player weapon enemy
 class Player {
   constructor(x, y, radius, color) {
@@ -164,12 +186,7 @@ class Particle {
 }
 
 //------------ Main logic --------------
-const player = new Player(
-  playerDetails.x,
-  playerDetails.y,
-  playerDetails.radius,
-  playerDetails.color
-);
+let player;
 
 let speed = 2;
 // array of weapons
@@ -257,6 +274,12 @@ const spawnEnemy = () => {
 
 function startGame(event) {
   //form submit method
+  player = new Player(
+    playerDetails.x,
+    playerDetails.y,
+    playerDetails.radius,
+    playerDetails.color
+  );
   event.preventDefault();
 
   form.style.display = 'none';
@@ -352,7 +375,10 @@ function animation() {
   // context.clearRect(0, 0, canvas.width, canvas.height);
 
   // Updating Player Score in Score board in html
-  scoreBoard.innerHTML = `Score : ${playerScore}`;
+  var scoreText = scoreBoard.innerHTML;
+  var scoreValue = parseInt(scoreText.split(':')[1].trim(), 10);
+  if (scoreValue != playerScore)
+    scoreBoard.innerHTML = `Score : ${playerScore}`;
 
   // Clearing canvas on each frame
   context.fillStyle = 'rgba(49, 49, 49,0.2)';
@@ -537,5 +563,13 @@ function handleEvent(event) {
     // console.log('Click/Contextmenu/Keypress event');
   }
 }
+
+addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+});
+
+addEventListener('resize', () => {
+  window.location.reload();
+});
 
 animation();

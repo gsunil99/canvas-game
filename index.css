@@ -20,8 +20,8 @@ canvas {
 
 form {
   background-color: rgba(255, 255, 255, 0.158);
-  height: 60vh;
-  width: 60vw;
+  height: 100%;
+  width: 100%;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -95,4 +95,10 @@ form > input:hover {
   margin: 2vmax;
   color: white;
   font: 600 1.2vmax cursive;
+}
+p {
+  color: whitesmoke;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  font-size: larger;
 }
