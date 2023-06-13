@@ -277,7 +277,76 @@ function startGame(event) {
   }
   setInterval(spawnEnemy, 1000);
 }
+function heavyWeaponCode(e) {
+  // finding angle between player position(center) and click co-ordinates
+  if (playerScore <= 0) return;
 
+  heavyWeaponSound.play();
+  // Decreasing Player Score for using Heavy Weapon
+  playerScore -= 2;
+  // Updating Player Score in Score board in html
+  scoreBoard.innerHTML = `Score : ${playerScore}`;
+
+  const playerAngle = Math.atan2(
+    e.clientY - canvas.height / 2,
+    e.clientX - canvas.width / 2
+  );
+
+  // Making const speed for light weapon
+  const velocity = {
+    x: Math.cos(playerAngle) * 4,
+    y: Math.sin(playerAngle) * 4,
+  };
+
+  // Adding light weapon in weapons array
+  weapons.push(
+    new Weapon(
+      canvas.width / 2,
+      canvas.height / 2,
+      30,
+      'cyan',
+      velocity,
+      heavyWeaponDamage
+    )
+  );
+}
+
+function hugeWeaponCode() {
+  if (playerScore < 20) return;
+
+  // Decreasing Player Score for using Huge Weapon
+  playerScore -= 20;
+  // Updating Player Score in Score board in html
+  scoreBoard.innerHTML = `Score : ${playerScore}`;
+  hugeWeaponSound.play();
+  hugeWeapons.push(new HugeWeapon(0, 0));
+}
+function smallWeaponCode(e) {
+  shootingSound.play();
+  // finding angle between player position(center) and click co-ordinates
+  const playerAngle = Math.atan2(
+    e.clientY - canvas.height / 2,
+    e.clientX - canvas.width / 2
+  );
+
+  // Making const speed for light weapon
+  const velocity = {
+    x: Math.cos(playerAngle) * 6,
+    y: Math.sin(playerAngle) * 6,
+  };
+
+  // Adding light weapon in weapons array
+  weapons.push(
+    new Weapon(
+      canvas.width / 2,
+      canvas.height / 2,
+      6,
+      'white',
+      velocity,
+      lightWeaponDamage
+    )
+  );
+}
 function animation() {
   const animationId = requestAnimationFrame(animation);
   // context.clearRect(0, 0, canvas.width, canvas.height);
@@ -395,9 +464,18 @@ function animation() {
 }
 
 // ---------------------------------Adding Event Listeners------------------------
+/*
+addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+});
+
+addEventListener('resize', () => {
+  window.location.reload();
+});
 
 // event Listener for Light Weapon aka left click
 canvas.addEventListener('click', (e) => {
+  console.log('clicked!!!');
   shootingSound.play();
   // finding angle between player position(center) and click co-ordinates
   const playerAngle = Math.atan2(
@@ -424,60 +502,110 @@ canvas.addEventListener('click', (e) => {
   );
 });
 
-// event Listener for Heavy Weapon aka right click
-canvas.addEventListener('contextmenu', (e) => {
-  e.preventDefault();
+if (window.matchMedia('(pointer: coarse)').matches) {
+  // It is a mobile device with touch support
+  var touchStartTime;
+  canvas.addEventListener('touchstart', function (event) {
+    touchStartTime = new Date().getTime(); // Record the start time of the touch
+  });
 
-  // finding angle between player position(center) and click co-ordinates
-  if (playerScore <= 0) return;
+  canvas.addEventListener('touchend', function (event) {
+    event.preventDefault();
+    var touchEndTime = new Date().getTime(); // Record the end time of the touch
+    var touchDuration = touchEndTime - touchStartTime; // Calculate the duration of the touch
 
-  heavyWeaponSound.play();
-  // Decreasing Player Score for using Heavy Weapon
-  playerScore -= 2;
-  // Updating Player Score in Score board in html
-  scoreBoard.innerHTML = `Score : ${playerScore}`;
+    if (touchDuration >= 200) {
+      // Define a threshold for the long-press duration
+      // Prevent the default touchend behavior
+      hugeWeaponCode();
+    }
+  });
+} else {
+  // event Listener for Heavy Weapon aka right click
+  canvas.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    heavyWeaponCode(e);
+  });
+  addEventListener('keypress', (e) => {
+    if (e.key === ' ') {
+      hugeWeaponCode();
+    }
+  });
+}
+*/
 
-  const playerAngle = Math.atan2(
-    e.clientY - canvas.height / 2,
-    e.clientX - canvas.width / 2
-  );
+var touchHandled = false; // Flag to track whether touch event has been handled
+var touchStartTime, touchEndTime, touchDuration;
 
-  // Making const speed for light weapon
-  const velocity = {
-    x: Math.cos(playerAngle) * 4,
-    y: Math.sin(playerAngle) * 4,
-  };
-
-  // Adding light weapon in weapons array
-  weapons.push(
-    new Weapon(
-      canvas.width / 2,
-      canvas.height / 2,
-      30,
-      'cyan',
-      velocity,
-      heavyWeaponDamage
-    )
-  );
-});
-addEventListener('keypress', (e) => {
-  if (e.key === ' ') {
-    if (playerScore < 20) return;
-
-    // Decreasing Player Score for using Huge Weapon
-    playerScore -= 20;
-    // Updating Player Score in Score board in html
-    scoreBoard.innerHTML = `Score : ${playerScore}`;
-    hugeWeaponSound.play();
-    hugeWeapons.push(new HugeWeapon(0, 0));
+//laptop/desktop events
+// Click event listener
+canvas.addEventListener('click', function (event) {
+  if (!touchHandled) {
+    handleEvent(event);
   }
 });
-// addEventListener('contextmenu', (e) => {
-//   e.preventDefault();
-// });
 
-addEventListener('resize', () => {
-  window.location.reload();
+// Contextmenu event listener
+canvas.addEventListener('contextmenu', function (event) {
+  event.preventDefault(); // Prevent the default context menu behavior
+  if (!touchHandled) {
+    handleEvent(event);
+  }
 });
+
+// Keypress event listener
+addEventListener('keypress', function (event) {
+  if (!touchHandled) {
+    handleEvent(event);
+  }
+});
+
+//Mobile event
+// Touchstart event listener for mobile devices
+canvas.addEventListener('touchstart', function (event) {
+  event.preventDefault(); // Prevent the default touchstart behavior
+  touchStartTime = new Date().getTime(); // Record the start time of the touch
+  touchHandled = false; // Reset touchHandled flag
+});
+
+// Touchend event listener for mobile devices
+canvas.addEventListener('touchend', function (event) {
+  touchHandled = true; // Set touchHandled flag
+  touchEndTime = new Date().getTime(); // Record the end time of the touch
+  touchDuration = touchEndTime - touchStartTime; // Calculate the duration of the touch
+  handleEvent(event);
+});
+
+// Function to handle the events
+function handleEvent(event) {
+  if (event.type === 'touchend') {
+    // Handle touchend event for mobile devices
+    if (touchDuration >= 500) {
+      // Define a threshold for the long-press duration
+      // Prevent the default touchend behavior
+      hugeWeaponCode();
+      console.log('huge weapon');
+    } else if (touchDuration >= 10) {
+      smallWeaponCode(event.changedTouches[0]);
+      console.log('small weapon');
+    }
+  } else {
+    // Handle other events (click, contextmenu, keypress)
+    if (event.type === 'click') {
+      console.log('click event');
+      smallWeaponCode(event);
+    } else if (event.type === 'contextmenu') {
+      event.preventDefault();
+      heavyWeaponCode(event);
+      console.log('Contextmenu event');
+    } else if (event.type === 'keypress') {
+      if (event.key === ' ') {
+        hugeWeaponCode();
+      }
+      console.log('Keypress event');
+    }
+    // console.log('Click/Contextmenu/Keypress event');
+  }
+}
 
 animation();
