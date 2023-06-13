@@ -267,13 +267,13 @@ function startGame(event) {
     return (speed = 1);
   } else if (difficultyValue == 'Medium') {
     setInterval(spawnEnemy, 1400);
-    return (speed = 3);
+    return (speed = 1.5);
   } else if (difficultyValue == 'Hard') {
     setInterval(spawnEnemy, 1000);
-    return (speed = 5);
+    return (speed = 2);
   } else if (difficultyValue == 'Fast') {
     setInterval(spawnEnemy, 700);
-    return (speed = 6);
+    return (speed = 2.5);
   }
   setInterval(spawnEnemy, 1000);
 }
@@ -464,76 +464,6 @@ function animation() {
 }
 
 // ---------------------------------Adding Event Listeners------------------------
-/*
-addEventListener('contextmenu', (e) => {
-  e.preventDefault();
-});
-
-addEventListener('resize', () => {
-  window.location.reload();
-});
-
-// event Listener for Light Weapon aka left click
-canvas.addEventListener('click', (e) => {
-  console.log('clicked!!!');
-  shootingSound.play();
-  // finding angle between player position(center) and click co-ordinates
-  const playerAngle = Math.atan2(
-    e.clientY - canvas.height / 2,
-    e.clientX - canvas.width / 2
-  );
-
-  // Making const speed for light weapon
-  const velocity = {
-    x: Math.cos(playerAngle) * 6,
-    y: Math.sin(playerAngle) * 6,
-  };
-
-  // Adding light weapon in weapons array
-  weapons.push(
-    new Weapon(
-      canvas.width / 2,
-      canvas.height / 2,
-      6,
-      'white',
-      velocity,
-      lightWeaponDamage
-    )
-  );
-});
-
-if (window.matchMedia('(pointer: coarse)').matches) {
-  // It is a mobile device with touch support
-  var touchStartTime;
-  canvas.addEventListener('touchstart', function (event) {
-    touchStartTime = new Date().getTime(); // Record the start time of the touch
-  });
-
-  canvas.addEventListener('touchend', function (event) {
-    event.preventDefault();
-    var touchEndTime = new Date().getTime(); // Record the end time of the touch
-    var touchDuration = touchEndTime - touchStartTime; // Calculate the duration of the touch
-
-    if (touchDuration >= 200) {
-      // Define a threshold for the long-press duration
-      // Prevent the default touchend behavior
-      hugeWeaponCode();
-    }
-  });
-} else {
-  // event Listener for Heavy Weapon aka right click
-  canvas.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-    heavyWeaponCode(e);
-  });
-  addEventListener('keypress', (e) => {
-    if (e.key === ' ') {
-      hugeWeaponCode();
-    }
-  });
-}
-*/
-
 var touchHandled = false; // Flag to track whether touch event has been handled
 var touchStartTime, touchEndTime, touchDuration;
 
