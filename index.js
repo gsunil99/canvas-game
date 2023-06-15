@@ -287,15 +287,19 @@ function startGame(event) {
   const difficultyValue = difficulty.value;
   if (difficultyValue == 'Easy') {
     setInterval(spawnEnemy, 2000);
+    if (controlsWidth > 768) return (speed = 2);
     return (speed = 1);
   } else if (difficultyValue == 'Medium') {
     setInterval(spawnEnemy, 1400);
+    if (controlsWidth > 768) return (speed = 4);
     return (speed = 1.5);
   } else if (difficultyValue == 'Hard') {
     setInterval(spawnEnemy, 1000);
+    if (controlsWidth > 768) return (speed = 6);
     return (speed = 2);
   } else if (difficultyValue == 'Fast') {
     setInterval(spawnEnemy, 700);
+    if (controlsWidth > 768) return (speed = 8);
     return (speed = 2.5);
   }
   setInterval(spawnEnemy, 1000);
